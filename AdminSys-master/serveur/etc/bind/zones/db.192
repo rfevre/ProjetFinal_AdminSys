@@ -1,0 +1,19 @@
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     server.da2i.org. webuser.da2i.org. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+;@      IN      NS      localhost.
+;1.0.0  IN      PTR     localhost.
+        IN      NS      server.
+2       IN      PTR     gateway.da2i.org.
+10      IN      PTR     server.da2i.org.
+20      IN      PTR     debian.da2i.org.
+30      IN      PTR     archlinux.da2i.org.
+40      IN      PTR     freebsd.da2i.org.

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="Compte Rendu du Projet Final Installation et Configuration de machines" />
+        <meta name="author" content="vandenbm, deconind, vanhoutm" />
+        <title>Projet Final - Vandenbm - Deconind - Vanhoutm</title>
+		<style>
+			body{
+				margin:auto;
+				padding: 0px;
+			}
+
+			h1, .small_title { 
+				text-align: center;
+			}
+
+			h1 {
+				color: #0957AB;
+			}
+
+			.small_title { 
+				font-size: 12px;
+				display:block;  
+			}
+
+			h2 {
+				color: #1768BF;
+				margin-left: 20px;
+			}
+
+			h3 {
+				color : #6AA0D9;
+				margin-left: 40px;
+			}
+
+			h4 {
+				color : #48AEFF;
+				margin-left: 60px;
+			}
+			
+			p {
+				color: black;
+				margin-left: 65px;
+				margin-right: 65px;
+			}
+
+			pre {
+				margin-left: 65px;
+				margin-right: 65px;
+				padding: 5px 5px 5px 10px;
+				width: 700px;
+				border: 1px black solid;
+				border-radius: 10px;
+				box-shadow: 3px 3px 1px #888888;
+				background-color: #D0D0D0;
+				word-wrap: break-word;
+				white-space: pre-wrap;
+			}
+
+			ul, ol:not(.sommaire){
+				margin-left: 80px;
+				margin-right: 80px;
+				-webkit-padding-start: 0px;
+			} 
+
+			a, a:visited {
+				color:black;
+			}
+
+			a:hover {
+				color: blue;
+			}
+
+			.sommaire ol li{
+				margin-left:  15px;
+				margin-right: 60px;				
+			}
+
+			.sommaire li{
+				margin-left: 40px;
+			}
+
+		</style>
+    </head>
+
+    <body>
+    	<h1>Administration Système</h1>
+    	<h1>Projet Final</h1>
+    	<span class="small_title">Vandenbussche Mathieu - Deconinck Damien - Vanhoutte Michaël</span>
+
+    	<h2>Sommaire</h2>
+    	<ol class="sommaire" style="list-style-type:upper-roman;">
+
+			<li><a href="#le-serveur">Le Serveur</a>
+
+				<ol class="sommaire" style="list-style-type:upper-alpha;">
+
+					<li><a href="#install-serveur">Installation du serveur</a></li>
+					<li><a href="#config-serveur">Configuration du DNS</a></li>
+					<li><a href="#hostname-serveur">Hostname</a></li>
+					<li><a href="#bind9-serveur">Bind9</a></li>
+
+					<li><a href="#ldap-serveur">LDAP</a>
+						<ol class="sommaire" style="list-style-type:arabic-numbers;">
+							<li><a href="#ldap-install-serveur">Installation du Serveur LDAP</a></li>
+							<li><a href="#ldap-config-serveur">Configuration de LDAP</a></li>
+							<li><a href="#ldap-creation-serveur">Créations de l'arbre LDAP</a></li>
+							<li><a href="#ldap-useradd-serveur">Création d'utilisateurs</a></li>  
+						</ol>
+					</li>
+
+					<li><a href="#nfs-serveur">Serveur NFS</a>
+						<ol class="sommaire" style="list-style-type:arabic-numbers;">
+							<li><a href="#nfs-install-serveur">Installation du Serveur NFS</a></li>
+							<li><a href="#nfs-test-serveur">Test Montage NFS</a></li>
+						</ol>
+					</li>
+
+				</ol>
+			</li>
+
+			<li><a href="#debian">Le Client Debian</a>
+
+				<ol class="sommaire" style="list-style-type:upper-alpha;">
+
+					<li><a href="#install-debian">Installation de la machine Debian</a></li>
+					<li><a href="#config-debian">Configuration de l'adresse IP</a></li>
+
+					<li><a href="#ldap-nfs-debian">Installation et Configuration Montage NFS</a>
+						<ol class="sommaire" style="list-style-type:arabic-numbers;">
+							<li><a href="#ldap-nfs-debian">Configuration du LDAP et NSS</a></li>
+							<li><a href="#ldap-pam-debian">Configuration du PAM</a></li>
+							<li><a href="#ldap-fstab-debian">Configuration du fstab</a></li> 
+						</ol>
+					</li>
+
+					<li><a href="#outils-install-debian">Installations et configurations des Outils</a>
+						<ol class="sommaire" style="list-style-type:arabic-numbers;">
+							<li><a href="#firefox-install-debian">FireFox</a></li>
+							<li><a href="#thunderbird-install-debian">ThunderBird</a></li>
+							<li><a href="#libreoffice-install-debian">Libre Office</a></li> 
+							<li><a href="#florence-install-debian">Clavier Virtuel</a></li>
+							<li><a href="#loupe-install-debian">Loupe</a></li>
+						</ol> 
+					</li>
+
+				</ol>
+			</li>
+
+			<li><a href="#archlinux">Le Client ArchLinux</a>
+			
+				<ol class="sommaire" style="list-style-type:upper-alpha;">
+			
+					<li><a href="#install-archlinux">Installation de la machine ArchLinux</a></li>
+					<li><a href="#config-archlinux">Configuration de l'adresse IP</a></li>
+					<li><a href="#ldap-install-archlinux">Installation et Configuration du LDAP</a></li>  
+					<li><a href="#nfs-install-archlinux">NFS auto-mount</a></li> 
+				</ol>
+			</li>
+
+			<li><a href="#sources">Les Sources</a>
+				<ol>
+					<li><a href="#bind-sources">Documentation sur Bind9</a></li>
+					<li><a href="#ldap-sources">LDAP</a></li>
+					<li><a href="#archlinux-sources">Documentation ArchLinux</a></li>
+				</ol>
+			</li>
+		</ol>
+
+    	<h2 id="le-serveur">I. Le Serveur</h2>
+			<h3 id="install-serveur">A. Installation du serveur</h3>
+				<p>
+					Nous allons installer la machine <strong>Server</strong>. Pour ce faire, nous avons besoin d'un "iso" qui sera récupéré sur <strong>~hauspiem/public/mini-debian.iso</strong>.<br />
+					Nous lançons à présent <strong>vmplayer</strong>.<br />
+					Voici les configurations pour vmplayer :
+				</p>
+					<ol>
+						<li>Créer une nouvelle machine</li>
+						<li>Sélection de l'iso <strong>mini-debian.iso</strong>,puis suivant</li>
+						<li>Sélection de <strong>Debian 6</strong>, puis suivant </li>
+						<li>On va prendre <strong>10 GB</strong> d'espace disque, puis suivant jusqu'à avoir <strong>Terminer</strong>.</li>
+					</ol>
+				<p>A ce moment là, Débian va commencer à ce lancer, maintenant nous devons faire ceci :
+				</p>
+					<ol>
+						<li>Installer</li>
+						<li>Pour les langues nous pouvons choisir Français (/French)</li>
+						<li>Nom de la machine : server</li>
+						<li>Nom du domain : da2i.org</li>
+						<li>Miroir</li>
+						<li>Pays : France</li>
+						<li>Package : debian.pliytech-lille.fr</li>
+						<li>Proxy : http://cache.univ-lille1.fr</li>
+						<li>Mot de passe SuperUtilisateur : root</li>
+						<li>Utilisateur : mathieu | Mot de passe : root</li>
+						<li>Installer manuellement le disque dur
+							<ul>
+								<li>Créer une nouvelle partition -> Oui</li>
+								<li>Aller dans : <strong>SCSII (0,0,0) (sda) - 10.7 GB VMWARE VMWARE VIRTUALS</strong></li>
+								<li>Aller dans : <strong>pri/log 10.7 GB espace libre</strong></li>
+								<li>Créer une nouvelle partition -> 4 GB -> Primaire -> début -> 'ext 4' -> / -> Fin </li>
+								<li>Créer une nouvelle partition -> 200 MB -> Primaire -> début -> 'ext 4' -> /home -> Fin </li>
+								<li>Créer une nouvelle partition -> 1 GB -> Primaire -> début -> 'swap' -> Fin</li>
+								<li>Créer une nouvelle partition -> 5.5 GB -> Primaire -> début -> 'ext 4' -> /srv -> Fin</li>
+								<li>Terminer -> Oui</li> 
+							</ul>
+						</li>
+						<li>Pas de paquet et pas de participation aux expériences.</li>
+						<li>Il faut décocher tout <strong>SAUF</strong> ssh et utilitaire usuel</li>
+						<li>Installer le GRUB sur la partition d'amorçage du système -> Oui</li> 
+					</ol>
+				<p>Après ça, il y aura un message disant que tout s'est bien passé (normalement). <br />
+				Debian redémarra alors pour mettre à jour les données. Il suffira de se connecter avec le login <strong>root</strong> et son mot de passe <strong>root</strong>.
+				</p>
+	    	<h3 id="config-serveur">B. Configuration du DNS</h3>
+				<p>Il faut modifier le fichier de configuration <strong>interfaces</strong> :</p> 
+				<pre>nano /etc/network/interfaces</pre>
+				<p>On commente/supprime les lignes suivantes :</p>	  
+<pre>
+# allow-hotplug eth0 
+# iface eth0 inet dhcp
+</pre>
+				<p>Et on ajoute ceci au fichier :</p>
+<pre>
+auto eth0
+iface eth0  inet static
+address 192.168.194.10
+netmask 255.255.255.0
+#network 192.168.194.0 			#Pas Obligé
+#broadcast 192.168.194.255 		#Pas Obligé
+gateway 192.168.194.2 			#Gateway VmPlayer
+</pre>
+				<p>On Peut ensuite relancer la configuration de notre adresse IP :</p>
+				<pre>/etc/init.d/networking restart</pre>
+
+	    	<h3 id="hostname-serveur">C. Hostname</h3>
+	    		<p>Afin d’avoir le nom <strong>'server.da2i.org'</strong>, il faut vérifier si nous avons bien çà en nom de domaine. <br /> Pour ce faire :</p>
+<pre>hostname -f</pre>
+				<p><strong>Si ce n'est pas le cas, il faut :</strong><br />
+				Ouvrir le fichier <strong>/etc/hostname</strong></p>
+<pre>nano /etc/hostname</pre>
+				<p>Mettre</p>
+<pre>server</pre>
+				<p>Ouvrir le fichier <strong>/etc/hosts</strong></p>
+<pre>nano /etc/hosts</pre>
+				<p>Commenter la seconde ligne & ajouter seconde ligne :</p>
+<pre>#127.0.0.1 server.meleze21 server
+192.168.194.10 server.da2i.org server</pre>
+				<p>Relancer le serveur :</p>
+<pre>/etc/init.d/networking restart</pre>
+				<p></p>
+
+	    	<h3 id="bind9-serveur">D. Bind9</h3>
+	    		<p>Avant de commencer, il faut bien vérifier la configuration du <strong>/etc/network/interfaces</strong> comme il a été fait dans le <strong>I. 1.</strong>.<br />
+	    		Si tout est normal on peut donc commencer par installer <strong>bind9</strong></p>
+<pre>apt-get install bind9</pre>
+				<p>Après l'installation, on va pouvoir configurer 3 fichiers</p>
+				<ul>
+					<li>Named.conf.options</li>
+					<li>Named.conf.local</li>
+					<li>Named.conf.resolv.conf</li>
+				</ul>
+				<p>Nous allons tout d'abord commencer par le fichier <strong>Named.conf.options</strong> pour configurer les adresse IP DNS afin que le serveur puisse se connecter à certain DNS exterieur.</p>
+<pre>nano /etc/bind/named.conf.options</pre> 
+<pre>forwarders {
+	192.168.194.2; 	#IP de vmPlayer
+	172.18.48.31;	#DNS Universite
+};</pre>
+				<p>/!\ ATTENTION /!\ Avant de sauvegarder et de fermer le fichier, il faut modifier la valeur de <strong>dnssec-validation</strong> et le passer de <strong>auto</strong> à <strong>no</strong>, comme ceci : </p>
+<pre>dnssec-validation no;</pre>
+				<p>Après avoir sauvegarder, on peut ensuite modifier le fichier <strong>named.conf.local</strong>. Ce fichier permet de définir des "zones" et "reverse zone" pour pouvoir traduire les adresses ip lorsque l'on rentrera un nom de domaine, ou réciproquement.</p>
+<pre>nano /etc/bind/named.conf.local</pre>
+				<p></p>
+<pre>zone "da2i.org" {
+    type master;
+    file "/etc/bind/zones/db.da2i.org";
+};
+
+zone "194.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.192";
+};</pre>
+				<p>Nous devons ensuite créer les deux fichiers <strong>db.da2i.org</strong> & <strong>db.192</strong> et son dossier "<strong>zones</strong>".</p>
+<pre>mkdir /etc/bind/zones</pre>
+				<p>Avant de continuer, il faut se souvenir de la liste des IPs que l'on doit prendre en compte :</p>
+				<ul>
+					<li>gateway : 192.168.194.2</li>
+					<li>server : 192.168.194.10</li>
+					<li>debian : 192.168.194.20</li>
+					<li>archlinux : 192.168.194.30</li>
+					<li>freebsd : 192.168.194.40</li> 
+				</ul>
+				<p>On peut ensuite créer les fichiers : <strong>db.da2i.org</strong> & <strong>db.192</strong> : </p>
+<pre>cp /etc/bind/db.local /etc/bind/zones/db.da2i.org
+cp /etc/bind/db.127 /etc/bind/zones/db.192</pre>
+				<p>Configurons d'abord le premier fichier :</p>
+<pre>nano /etc/bind/zones/db.da2i.org</pre>
+				<p>/!\ ATTENTION A BIEN ECRIRE SANS OUBLIER LES POINTS ET AUTRES SIGNES /!\</p>
+<pre>;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     server.da2i.org. webuser.da2i.org. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+da2i.org.       IN      NS      server.da2i.org.
+da2i.org.       IN      A       192.168.194.10
+;@      IN      NS      localhost.
+;@      IN      A       127.0.0.1
+;@      IN      AAAA    ::1
+server  IN      A       192.168.194.10
+gateway IN      A       192.168.194.2
+debian  IN      A       192.168.194.20
+archlinux       IN      A       192.168.194.30
+freebsd IN      A       192.168.194.40
+www     IN      CNAME   da2i.org.
+</pre>
+				<p>On peut ensuite s'occuper du second fichier :</p>
+<pre>nano /etc/bind/zones/db.192</pre> 
+<pre>;
+; BIND reverse data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     server.da2i.org. webuser.da2i.org. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+;@      IN      NS      localhost.
+;1.0.0  IN      PTR     localhost.
+        IN      NS      server.
+2       IN      PTR     gateway.da2i.org.
+10      IN      PTR     server.da2i.org.
+20      IN      PTR     debian.da2i.org.
+30      IN      PTR     archlinux.da2i.org.
+40      IN      PTR     freebsd.da2i.org.
+</pre>
+				<p>On peut vérifier si nous avons bien écris les fichiers. Si on fait : </p>
+<pre>named-checkzone da2i.org /etc/bind/zones/db.da2i.org</pre>
+				<p>Cela devrait afficher ceci :</p>
+<pre>zone da2i.org /IN: loaded serial 2
+Ok</pre>
+				<p>De même avec le second fichier : </p>
+<pre>named-checkzone da2i.org /etc/bind/zones/db.192</pre>
+				<p></p>
+<pre>zone da2i.org /IN: loaded serial 1
+Ok</pre>
+				<p>Maintenant, nous pouvons modifier le fichier <strong>resolv.conf</strong> </p>
+<pre>nano /etc/resolv.conf</pre> 
+<pre>domain da2i.org
+search da2i.org
+nameserver 192.168.194.10</pre>
+				<p>Nous avons enfin un <strong>dns-nameservers</strong> que l'on peut ajouter dans le fichier <strong>/etc/network/interfaces</strong></p>
+<pre>nano /etc/network/interfaces</pre> 
+<pre>dns-nameservers 192.168.194.10</pre>
+				<p>Pour finir, on redémarre le service de <strong>bind9</strong></p>
+<pre>/etc/init.d/bind9 restart</pre>
+				<p>On peut faire une vérification afin de savoir s'il n'y a aucune erreur, pour cela, juste après le "restart", il faut faire :</p>
+<pre>tail -f /var/log/syslog</pre>
+				<p>Il ne devrait y avoir aucune erreur. Si tel est le cas, vérifiez vos fichiers de configuration.</p> 
+<pre>host -l da2i.org</pre> 
+<pre>da2i.org name server server.da2i.org.
+da2i.org has address 192.168.194.10
+archlinux.da2i.org has address 192.168.194.30
+debian.da2i.org has address 192.168.194.20
+freebsd.da2i.org has address 192.168.194.40
+gateway.da2i.org has address 192.168.194.2
+server.da2i.org has address 192.168.194.10</pre>
+	    	
+	    	<h3 id="ldap-serveur">E. LDAP</h3>
+	    		<h4 id="ldap-install-serveur">1. Installation du Serveur LDAP</h4>
+	    		<p>On commence par installer LDAP</p>
+<pre>apt-get install slapd ldap-utils</pre>
+				<p>On devra configurer comme ceci le serveur : </p>
+<pre>Omit OpenLDAP server configuration? <strong>No</strong>
+DNS domain name: <strong>da2i.org</strong>
+Organization name? <strong>da2i.org</strong>
+Administrator password: <strong>root</strong>
+Confirm password: <strong>root</strong>
+Database backend to use: <strong>HDB</strong>
+Do you want the database to be removed when slapd is purged? <strong>No</strong>
+Allow LDAPv2 protocol? <strong>No</strong>
+</pre>
+				<p>Le serveur OpenLDAP sera donc lancé.</p>
+
+	    		<h4 id="ldap-config-serveur">2. Configuration de LDAP</h4>
+	    		<p>Nous voulons toujours nous connecter au ldap en root, ainsi que sur le serveur. <br />
+	    		Voici quelques configurations pour le serveur :</p>
+<pre>ldapadd -c -Y EXTERNAL -H ldapi:/// -f /etc/ldap/schema/core.ldif
+ldapadd -c -Y EXTERNAL -H ldapi:/// -f /etc/ldap/schema/cosine.ldif
+ldapadd -c -Y EXTERNAL -H ldapi:/// -f /etc/ldap/schema/nis.ldif
+ldapadd -c -Y EXTERNAL -H ldapi:/// -f /etc/ldap/schema/inetorgperson.ldif</pre>
+				<p>Ensuite, nous voulons remplacer la valeur par défaut <strong>olcLogLevel: none</strong> par <strong>olcLogLevel: 256</strong> </p>
+<pre>echo "dn: cn=config
+changetype: modify
+replace: olcLogLevel
+olcLogLevel: 256" > /var/tmp/loglevel.ldif
+</pre> 
+<pre>ldapmodify -Y EXTERNAL -H ldapi:/// -f /var/tmp/loglevel.ldif</pre>
+				<p>Nous voulons un "équivalent" d'un index de recherche grâce à l'uid</p>
+<pre>echo "
+dn: olcDatabase={1}hdb,cn=config
+changetype: modify
+add: olcDbIndex
+olcDbIndex: uid eq
+" > /var/tmp/uid_eq.ldif
+</pre>
+<pre>ldapmodify -Y EXTERNAL -H ldapi:/// -f /var/tmp/uid_eq.ldif</pre>
+				<p>Enfin, nous voulons que l'administrateur puisse accéder au LDAP et modifier le <strong>cn=config</strong> en mode d'écriture pour <strong>dc=da2i,dc=org</strong></p>
+<pre>echo "dn: olcDatabase={0}config,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: to * by dn="cn=admin,dc=da2i,dc=org" write" > /var/tmp/access.ldif
+</pre> 
+<pre>ldapmodify -c -Y EXTERNAL -H ldapi:/// -f /var/tmp/access.ldif</pre>
+				<p>On pourra alors vérifier si le serveur LDAP fonctionne bien.<br />
+				On va vérifier dans le <strong>/etc/ldap/ldap.conf</strong> s'il y a bien ces deux lignes : </p>
+<pre>BASE  dc=da2i, dc=org
+URI ldap://192.168.194.10/</pre>
+				<p>Et enfin on peut vérifier le contenu du LDAP sur le serveur :</p>
+<pre>ldapsearch -x</pre>
+				<p>et on obtient, normalement, ceci :</p>
+<pre># extended LDIF
+#
+# LDAPv3
+# base dc=da2i,dc=org (default) with scope subtree
+# filter: (objectclass=*)
+# requesting: ALL
+#
+
+# da2i.org
+dn: dc=da2i,dc=org
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: da2i.org
+dc: da2i
+
+# admin, da2i.org
+dn: cn=admin,dc=da2i,dc=org
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+description: LDAP administrator
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 3
+# numEntries: 2
+</pre>
+				<p>Le serveur LDAP est bien configuré, nous pouvons commencer à créer l'arbre.</p>
+
+	    		<h4 id="ldap-creation-serveur">3. Créations de l'arbre LDAP</h4>
+	    		<p>Nous avons créé deux "organizational units" : <strong>users</strong> et <strong>groupes</strong> qui correspondra à <strong>/etc/passwd</strong> et <strong>/etc/group</strong>. <br />
+	    		Créons un fichier temporaire pour y ajouter l'arbres :</p>
+<pre>touch /var/tmp/ou.ldif</pre> 
+<pre>dn: ou=users,dc=da2i,dc=org
+ou: users
+objectClass: organizationalUnit
+
+dn: ou=groupes,dc=da2i,dc=org
+ou: groupes
+objectClass: organizationalUnit
+</pre>
+				<p>Pour charger le fichier au ldap, nous devons l'éteindre et utiliser la méthode <strong>slapadd</strong> : </p>
+<pre>invoke-rc.d slapd stop
+slapadd -c -v -l /var/tmp/ou.ldif</pre>
+				<p>Si nous faisons une recherche sur une des deux "organizational units", nous devrions obtenir : </p>
+<pre># extended LDIF
+#
+# LDAPv3
+# base dc=da2i,dc=org (default) with scope subtree
+# filter: ou=users
+# requesting: ALL
+#
+
+# users, da2i.org
+dn: ou=users,dc=da2i,dc=org
+ou: users
+objectClass: organizationalUnit
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+</pre>
+				<h4 id="ldap-useradd-serveur">4. Création d'utilisateurs</h4>
+				<p>L'arbre étant créé, nous pouvons créer un utilisateur pour faire les tests :</p>
+<pre>nano /var/tmp/user1.ldif</pre>
+<pre>dn: cn=vandenbm,ou=groupes,dc=da2i,dc=org
+cn: vandenbm
+gidNumber: 1001
+objectClass: top
+objectClass: posixGroup
+
+dn: uid=vandenbm,ou=users,dc=da2i,dc=org
+uid: vandenbm
+uidNumber: 1001
+gidNumber: 1001
+cn: Vandenbm
+sn: Vandenbm
+objectClass: top
+objectClass: person
+objectClass: posixAccount
+objectClass: shadowAccount
+loginShell: /bin/bash
+homeDirectory: /home/vandenbm</pre>
+				<p>Le serveur toujours éteind, nous pouvons faire, plus ou moins, la même commande que précédemment pour charger le fichier dans le serveur ldap</p>
+<pre>ldapadd -c -x -D cn=admin,dc=da2i,dc=org -W -f /var/tmp/user1.ldif</pre>
+				<p>Nous allons à présent charger un mot de passe pour l'utilisateur :</p>
+<pre>ldappasswd -x -D cn=admin,dc=da2i,dc=org -W -S uid=vandenbm,ou=users,dc=da2i,dc=org</pre> 
+<pre>New password: <strong>NEW USER PASSWORD</strong>
+Re-enter new password:  <strong>NEW USER PASSWORD</strong>
+Enter LDAP Password:   <strong>ADMIN PASSWORD</strong>
+</pre>
+				<p>Nous pouvons vérifier l'ajout de l'utilisateur :</p>
+<pre>ldapsearch -x uid=vandenbm</pre> 
+<pre># extended LDIF
+#
+# LDAPv3
+# base dc=da2i,dc=org (default) with scope subtree
+# filter: uid=vandenbm
+# requesting: ALL
+#
+
+# vandenbm, users, da2i.org
+dn: uid=vandenbm,ou=users,dc=da2i,dc=org
+uid: vandenbm
+uidNumber: 1001
+gidNumber: 1001
+cn: Vandenbm
+sn: Vandenbm
+objectClass: top
+objectClass: person
+objectClass: posixAccount
+objectClass: shadowAccount
+loginShell: /bin/bash
+homeDirectory: /home/vandenbm
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+</pre>
+				<p><strong>Le serveur fonctionne bien et est prêt à fonctionner sur un client.</strong></p> 
+
+	    		
+
+	    	<h3 id="nfs-serveur">E. Serveur NFS</h3>
+	    		<h4 id="nfs-install-serveur">1. Installation du Serveur NFS</h4>
+				
+				<p>Nous allons à présent faire le serveur nfs. Nous allons pour cela commencer à l'installer</p>
+<pre>apt-get install nfs-kernel-server</pre>
+				<p>Une fois que c'est installé, nous allons configurer l'exports de montage.</p>
+<pre>nano /etc/exports</pre>
+<pre>/srv/serveur *.da2i.org(rw,sync,no_subtree_check)</pre>
+				<p>A présent nous allons lancer le serveur nfs :</p>
+<pre>/etc/init.d/nfs-kernel-server start</pre>
+
+				<h4 id="nfs-test-serveur">2. Test de Montage NFS</h4>
+
+				<p>On peut essater tester le montage NFS.<br />
+				<br /><strong>Sur le Serveur :</strong></p>
+<pre>mkdir /srv/serveur 
+mkdir /srv/serveur/vandenbm 
+chmod go+rwx /srv/serveur/vandenbm
+touch /srv/serveur/vandenbm/toto</pre>
+				<p><strong>Sur le Client :</strong></p>
+<pre>mkdir /tmp/testnfs
+mount -t nfs 192.168.194.10:/srv/serveur/vandenbm /tmp/testnfs/
+ls /tmp/testnfs</pre>
+				<p>On voit alors le fichier <strong>toto</strong> dans le dossier, c'est le fichier toto créé dans le serveur. <br />
+				On voit donc que le client peut monter la partition <strong>/srv</strong> du serveur</p>
+
+				<p><strong>/!\ ATTENTION /!\ Le client devra configurer sur /etc/fstab pour pouvoir monter le dossier /srv/serveur/"Nom User".</strong></p>
+
+		<h2 id="debian">Le Client Debian</h2>
+			<h3 id="install-debian">A. Installation de la machine Debian </h3>
+			<p>
+				Nous allons installer la machine <strong>Debian</strong>. Pour ce faire, nous avons besoin d'un "iso" qui sera récupéré sur <strong>~hauspiem/public/mini-debian.iso</strong>.<br />
+				Nous lançons à présent <strong>vmplayer</strong>.<br />
+				Voici les configurations pour vmplayer :
+			</p>
+				<ol>
+					<li>Créer une nouvelle machine</li>
+					<li>Sélection de l'iso <strong>mini-debian.iso</strong>,puis suivant</li>
+					<li>Sélection de <strong>Debian 6</strong>, puis suivant </li>
+					<li>On va prendre <strong>10 GB</strong> d'espace disque, puis suivant jusqu'à avoir <strong>Terminer</strong>.</li>
+				</ol>
+			<p>A ce moment là, Débian va commencer à ce lancer, maintenant nous devons faire ceci :
+			</p>
+				<ol>
+					<li>Installer</li>
+					<li>Pour les langues nous pouvons choisir Français (/French)</li>
+					<li>Nom de la machine : debian</li>
+					<li>Nom du domain : da2i.org</li>
+					<li>Miroir</li>
+					<li>Pays : France</li>
+					<li>Package : debian.pliytech-lille.fr</li>
+					<li>Proxy : http://cache.univ-lille1.fr</li>
+					<li>Mot de passe SuperUtilisateur : root</li>
+					<li>Utilisateur : mathieu | Mot de passe : root</li>
+					<li>Installer le disque dur à l'aide de l'assistance</li>
+					<li>Pas de paquet et pas de participation aux expériences.</li>
+					<li>Il faut décocher tout <strong>SAUF</strong> Environnement graphique de bureau,ssh, utilitaire usuel</li>
+					<li>Installer le GRUB sur la partition d'amorçage du système -> Oui</li> 
+				</ol>
+			<p>Après ça, il y aura un message disant que tout s'est bien passé (normalement). <br />
+			Debian redémarra pour mettre à jour les données. Il suffira de se connecter avec le login <strong>root</strong> et son mot de passe <strong>root</strong>.
+			</p>
+			<h3 id="config-debian">B. Configuration de l'adresse IP</h3>
+			<p>Comme pour le serveur :</p>
+<pre>nano /etc/network/interface</pre>
+			<p>On commente ces lignes :</p>
+<pre># allow-hotplug eth0 
+# iface eth0 inet dhcp</pre>
+			<p>Pour ajouter ces lignes : </p>
+<pre>auto eth0
+iface eth0 inet static
+address 192.168.194.20
+netmask 255.255.255.0
+gateway 192.168.194.2
+dns-nameservers 192.168.194.10
+</pre>
+				<p>et on relance le <strong>network</strong> :</p>
+<pre>/etc/init.d/networking restart</pre> 
+			<h3 id="ldap-nfs-debian">C. Installation et Configuration Montage NFS</h3>
+				<h4 id="ldap-nss-debian">1. Configuration de LDAP et NSS</h4>
+	    		<p>quand on fait ceci :</p>
+<pre>id root</pre>
+				<p>on obtient bien ceci : </p>
+<pre>uid=0(root) gid=0(root) groups=0(root)</pre>
+				<p>cependant, pour vandenbm :</p>
+<pre>id vandenbm</pre>
+<pre>id: vandenbm: No such user</pre>
+				<p>Il n'y a donc pas d'accès au serveur LDAP. Nous allons donc faire en sorte de pouvoir en commençant par l'installer :</p>
+<pre>apt-get install libnss-ldap libpam-ldap nscd</pre>
+<pre>LDAP server URI: <strong>ldap://192.168.194.10/</strong>
+Distinguished name of the search base: <strong>dc=da2i,dc=org</strong>
+LDAP version to use: <strong>3</strong>
+Does the LDAP database require login? <strong>No</strong>
+Special LDAP privileges for root? <strong>No</strong>
+Make the configuration file readable/writable by its owner only? <strong>No</strong>
+Allow LDAP admin account to behave like local root? <strong>Yes</strong>
+Make local root Database admin. <strong>No</strong>
+Does the LDAP database require login? <strong>No</strong>
+LDAP administrative account: <strong>cn=admin,dc=da2i,dc=org</strong>
+LDAP administrative password: <strong>PASSWOR</strong>
+DLocal crypt to use when changing passwords. <strong>md5</strong>
+</pre>
+				<p>Si on obtient pas une des demande ci-dessous, il faut alors faire un <strong>dpkg-reconfigure</strong> avec soir <strong>libnss-ldap</strong> ou <strong>libpam-ldap</strong>.<br />
+				On vérifie qu'il y a bien les configurations au serveur :</p>
+<pre>/etc/libnss-ldap.conf</pre> 
+<pre>base dc=da2i,dc=org
+uri ldap://192.168.194.10/</pre>
+				<p>Il faut activer le module LDAP NSS</p>
+<pre>nano /etc/nsswitch.conf</pre>
+<pre>passwd:         files ldap
+group:          files ldap</pre>
+				<p>Pendant les essaies nous allons éteindre le NCSD</p>
+<pre>invoke-rc.d nscd stop</pre>
+				<p>Nous pouvons vérifier ensuite :</p>
+<pre>id vandenbm</pre>
+<pre>uid=1001(vandenbm) gid=1001(vandenbm) groups=1001(vandenbm)</pre>
+				<p><strong>le client a donc accès au LDAP du serveur.</strong></p>
+
+	    		<h4 id="ldap-pam-debian">2. Configuration du PAM</h4>
+				<p>Nous allons à présent faire en sorte d'avoir en procédure d'authentification au système à partir du LDAP du serveur.<br />
+				Nous allons donc vérifier/Modifier 4 fichiers pour avoir les mêmes lignes.
+				Tout d'abord : <strong>/etc/pam.d/common-account</strong></p>
+<pre>account [success=2 new_authtok_reqd=done default=ignore]        pam_unix.so
+account [success=1 default=ignore]      pam_ldap.so
+
+account requisite                       pam_deny.so
+
+account required                        pam_permit.so
+</pre>
+				<p>Ensuite : <strong>/etc/pam.d/common-auth</strong></p>
+<pre>auth    [success=2 default=ignore]      pam_unix.so nullok_secure
+auth    [success=1 default=ignore]      pam_ldap.so use_first_pass
+
+auth    requisite                       pam_deny.so
+
+auth    required                        pam_permit.so
+</pre>
+				<p>Ensuite : <strong>/etc/pam.d/common-passwd</strong></p>
+<pre>password        [success=2 default=ignore]      pam_unix.so obscure sha512
+password        [success=1 user_unknown=ignore default=die]     pam_ldap.so use_authtok try_first_pass
+
+password        requisite                       pam_deny.so
+
+password        required                        pam_permit.so
+</pre>
+				<p>Et enfin ! <strong>/etc/pam.d/common-session</strong></p>
+<pre>session [default=1]                     pam_permit.so
+
+session requisite                       pam_deny.so
+
+session required                        pam_permit.so
+
+session required        pam_unix.so </pre>
+				<p><strong>Nous pouvons redémarrer la machine client Debian. A la page d'accueil nous aurons les identifiants du LDAP serveur.</strong></p>
+				<h4 id="ldap-fstab-debian">3. Configuration du fstab</h4>
+				<p>Pour pouvoir monter le disque <strong>/srv/serveur/</strong> sur le client et pour que le client puisse avoir son <strong>/home</strong> à sa connection, il faut modifier le fichier <strong>/etc/fstab</strong> pour ajouter la ligne :</p>
+<pre>192.168.194.10:/srv/serveur 	/home 	nfs4 	auto 	0 	0</pre>
+				<p>on relance la machine client et on pourra alors accéder au fichier</p>
+
+
+			<h3 id="outils-install-debian">D. Installations et configurations des Outils</h3> 
+				<h4 id="firefox-install-debian">1. FireFox</h4>
+				<p>Firefox est déjà installé lors de l'installation du Debian sous le nom de iceweasel.</p>
+				<h4 id="thunderbird-install-debian">2. ThunderBird</h4>
+				<p>On peut installer une version de thunderBird Libre, IceDove :</p>
+<pre>apt-get install icedove</pre>
+				<h4 id="libreoffice-install-debian">3. Libre Office</h4>
+				<p>Libre Office est déjà installé lors de l'installation du Debian.</p>
+				<h4 id="florence-install-debian">4. Clavier Virtuel</h4>
+				<p>Pour installer le clavier virtuel sur la machine Debian, il faut installer <strong>florence</strong>.</p>
+<pre>apt-get install florence</pre>
+				<p>Pour le configurer afin que le clavier virtuel est affiché au démarrage, il faut modifier un fichier de configuration :</p>
+<pre>nano /etc/gdm3/Init/Default</pre>
+				<p>Ajouter à la fin du fichier, avant le <strong>exit 0</strong> : </p>
+<pre>florence &</pre>
+				<h4 id="loupe-install-debian">4. Loupe</h4>
+				<p>Pour installer la loupe, nous avons téléchargé un paquet sur internet :</p>
+<pre>wget http://switch.dl.sourceforge.net/project/magnifier/magnifier%20for%20Linux/3.5/magnifier-linux-3.5.tar.bz2</pre>
+				<p>Après l'avoir décompressé, il suffit de lancer l'installation l'installation.</p>
+
+		<h2 id="archlinux">Le Client ArchLinux</h2>
+			<h3 id="install-archlinux">A. Installation de la machine ArchLinux</h3>
+
+			<p>Comme pour les autres machines nous allons commencer par récuperer l'image de l'ArchLinux et lancer VMplayer.
+			Une fois VMPlayer ouvert voici la marche à suivre:
+			</p>
+			<ol>
+				<li>Créer une nouvelle machine.</li>
+				<li>On selectionne notre image Archlinux puis suivant.</li>
+				<li>Comme le système n'est pas détecté il va falloir selectionné "Linux" et "Other Linux 2.6.x kernel" comme version.</li>
+				<li>On la nomme "ArchLinux" et on choisit l'emplacement.</li>
+				<li>On selectionne 10Go de disque et on termine.</li>
+			</ol>
+
+			<p>
+				Une fois la machine prête on va pouvoir la lancer pour installer notre distribution.
+				
+			</p>
+
+			<h3 id="config-archlinux">B. Configuration de l'adresse IP</h3>
+
+			<p>
+				Pour configurer l'addresse ip nous allons copier le fichier "/etc/netctl/examples/ethernet-static" dans /etc/netctl en le renommant par le nom de notre interface réseau, ici "ens33".
+			</p>
+			<pre>mv /etc/netctl/examples/ethernet-static /etc/netctl/ens33</pre>
+			<p>Ensuite nous allons l'éditer (avec nano ou vim si vous l'avez installé) pour changer les lignes suivantes:
+			</p>
+			<pre>
+Lignes de l'exemple:
+
+Interface=eth0
+Connection=ethernet
+IP=static
+Address=('192.168.1.23/24' '192.168.1.87/24')
+#Routes=('192.168.0.0/24 via 192.168.1.2')
+Gateway='192.168.1.1'
+DNS=('192.168.1.1')
+
+A changer en : 
+
+Interface=ens33
+Connection=ethernet
+IP=static
+Address=('192.168.194.30/24')
+#Routes=('192.168.0.0/24 via 192.168.1.2')
+Gateway='192.168.194.2'
+DNS=('192.168.194.2')
+			</pre>
+
+			<h3 id="ldap-install-archlinux">C. Installation et Configuration du LDAP</h3>
+
+			<p>Pour configurer l'authentification au serveur ldap nous allons avant tout installer OpenLdap. Pour cela:<p>
+			<pre>pacman -S slapd</pre>
+			<p>Ensuite on va éditer le fichier /etc/openldap/ldap.conf </p>
+			<pre>
+Lignes à changer:
+BASE            dc=example,dc=com
+URI             ldap://localhost
+
+En:
+BASE            dc=da2i,dc=org
+URI             ldap://192.168.194.10/
+			</pre>
+
+			<p>Pour utiliser l'authentification via le serveur ldap on va modifier le fichier /etc/pam.d/system-login et rajouter les lignes en gras</p>
+
+			<pre>
+<strong>auth      sufficient pam_ldap.so</strong>
+auth      required  pam_unix.so     try_first_pass nullok
+auth      optional  pam_permit.so
+auth      required  pam_env.so
+
+<strong>account   sufficient pam_ldap.so</strong>
+account   required  pam_unix.so
+account   optional  pam_permit.so
+account   required  pam_time.so
+
+<strong>password  sufficient pam_ldap.so</strong>
+password  required  pam_unix.so     try_first_pass nullok sha512 shadow
+password  optional  pam_permit.so
+
+session   required  pam_limits.so
+session   required  pam_unix.so
+<strong>session   optional  pam_ldap.so</strong>
+session   optional  pam_permit.so
+			</pre>
+
+			<p>Il faut également éditer /etc/pam.d/su et /etc/pam.d/su-l de la maniere suivante:</p>
+<pre>
+#%PAM-1.0
+<strong>auth      sufficient    pam_ldap.so</strong>
+auth      sufficient    pam_rootok.so
+# Uncomment the following line to implicitly trust users in the "wheel" group.
+#auth     sufficient    pam_wheel.so trust use_uid
+# Uncomment the following line to require a user to be in the "wheel" group.
+#auth     required      pam_wheel.so use_uid
+auth      required	pam_unix.so use_first_pass
+<strong>account   sufficient    pam_ldap.so</strong>
+account   required	pam_unix.so
+<strong>
+#LIGNE SUIVANTE A RAJOUTER
+session         required        pam_mkhomedir.so skel=/etc/skel umask=0022</strong>
+<strong>session   sufficient    pam_ldap.so</strong>
+session   required	pam_unix.so
+</pre>
+
+<p>Pour que les homedir soient créés a la connexion il faut également rajouter la ligne suivante dans /etc/pam.d/system-login :</p>
+<pre>
+session    required   pam_mkhomedir.so skel=/etc/skel umask=0022
+</pre>
+
+			<h3 id="nfs-install-archlinux">C. NFS auto-mount</h3>
+			<p>
+				Pour que le homedir soit monter automatiquement à l'ouverture de la session de l'utilisateur, il faut ajouter une ligne dans /etc/fstab :
+			</p>
+<pre>192.168.194.10:/srv/serveur 	/home 	nfs4 	auto 	0 	0</pre>
+			<p>
+				Il faut ensuite redémarrer le client pour que le fichier soit pris en compte.
+			</p>
+
+    	<h2 id="sources">IV. Le Sources</h2>
+			<h3 id="bind-sources">A. Documentation sur Bind9</h3> 
+			<p>
+				<a href="http://doc.ubuntu-fr.org/bind9">http://doc.ubuntu-fr.org/bind9</a><br />
+				<a href="https://wiki.debian.org/fr/Bind9">https://wiki.debian.org/fr/Bind9</a>
+			</p>
+
+			<h3 id="ldap-sources">B. LDAP</h3>
+			<p>
+				<strong>Installer et Configurer un LDAP :</strong><br />
+				<a href="http://techpubs.spinlocksolutions.com/dklar/ldap.html">http://techpubs.spinlocksolutions.com/dklar/ldap.html</a><br />
+				<a href="http://labs.opinsys.com/blog/2010/01/27/setting-up-openldap-on-ubuntu-10-04-alpha2/">http://labs.opinsys.com/blog/2010/01/27/setting-up-openldap-on-ubuntu-10-04-alpha2/</a><br /><br />
+				<strong>Comprendre les modifications d'un élément de LDAP :</strong><br />
+				<a href="http://www.ghacks.net/2010/09/03/modify-ldap-entries-with-the-ldapmodify-command/">http://www.ghacks.net/2010/09/03/modify-ldap-entries-with-the-ldapmodify-command/</a><br /><br />
+				<strong>Essayer d'utiliser et de configurer PhpLdapAdmin :</strong><br />
+				<a href="https://www.digitalocean.com/community/articles/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps">https://www.digitalocean.com/community/articles/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps</a><br />
+			</p>
+    </body>
+</html>
+ 

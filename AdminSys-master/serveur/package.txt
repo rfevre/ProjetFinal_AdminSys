@@ -1,0 +1,11 @@
+Liste des paquets installés :
+
+Pour le service DNS :
+- Bind9
+
+Pour le Ldap :
+- slapd 
+- ldap-utils
+
+Pour le protocole NFS :
+- nfs-kernel-server

@@ -1,0 +1,15 @@
+Liste des paquets installés :
+
+Pour ldap : 
+- libnss-ldap 
+- libpam-ldap 
+- nscd
+
+Pour Firefox :
+- iceweasel
+
+Pour ThunderBird :
+- icedov
+
+Pour le clavier virtuel :
+- florence

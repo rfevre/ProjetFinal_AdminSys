@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<gconf>
+	<dir name="schemas">
+		<dir name="apps">
+			<dir name="aisleriot">
+				<entry name="recent_games_list" mtime="1394710909" type="schema" stype="list" owner="aisleriot" gettext_domain="aisleriot" list_type="string">
+					<local_schema locale="C" short_desc="Recently played games">
+						<default type="list" ltype="string">
+						</default>
+						<longdesc>A list of recently played games.</longdesc>
+					</local_schema>
+				</entry>
+				<entry name="statistics" mtime="1394710909" type="schema" stype="list" owner="aisleriot" gettext_domain="aisleriot" list_type="string">
+					<local_schema locale="C" short_desc="Statistics of games played">
+						<default type="list" ltype="string">
+						</default>
+						<longdesc>A list of strings that come in the form of a quintuple: name, wins, total games played, best time (in seconds) and worst time (also in seconds). Unplayed games do not need to be represented.</longdesc>
+					</local_schema>
+				</entry>
+				<entry name="game_file" mtime="1394710909" type="schema" stype="string" owner="aisleriot" gettext_domain="aisleriot">
+					<local_schema locale="C" short_desc="The game file to use">
+						<default type="string">
+							<stringvalue>klondike.scm</stringvalue>
+						</default>
+						<longdesc>The name of the scheme file containing the solitaire game to play.</longdesc>
+					</local_schema>
+				</entry>
+				<entry name="animations" mtime="1394710909" type="schema" stype="bool" owner="aisleriot" gettext_domain="aisleriot">
+					<local_schema locale="C" short_desc="Animations">
+						<default type="bool" value="true"/>
+						<longdesc>Whether or not to animate card moves.</longdesc>
+					</local_schema>
+				</entry>
+				<entry name="sound" mtime="1394710909" type="schema" stype="bool" owner="aisleriot" gettext_domain="aisleriot">
+					<local_schema locale="C" short_desc="Sound">
+						<default type="bool" value="false"/>
+						<longdesc>Whether or not to play event sounds.</longdesc>
+					</local_schema>
+				</entry>
+				<entry name="click_to_move" mtime="1394710909" type="schema" stype="bool" owner="aisleriot" gettext_domain="aisleriot">
+					<local_schema locale="C" short_desc="Select the style of control">
+						<default type="bool" value="false"/>
+						<longdesc>Select whether to drag the cards or to click on the source then the destination.</longdesc>
+					</local_schema>
+				</entry>
+				<entry name="show_statusbar" mtime="1394710909" type="schema" stype="bool" owner="aisleriot" gettext_domain="aisleriot">
+					<local_schema locale="C" short_desc="Whether or not to show the status bar">
+						<default type="bool" value="true"/>
+					</local_schema>
+				</entry>
+				<entry name="show_toolbar" mtime="1394710909" type="schema" stype="bool" owner="aisleriot" gettext_domain="aisleriot">
+					<local_schema locale="C" short_desc="Whether or not to show the toolbar">
+						<default type="bool" value="true"/>
+					</local_schema>
+				</entry>
+				<entry name="card_style" mtime="1394710909" type="schema" stype="string" owner="aisleriot" gettext_domain="aisleriot">
+					<local_schema locale="C" short_desc="Theme file name">
+						<default type="string">
+							<stringvalue></stringvalue>
+						</default>
+						<longdesc>The name of the file with the graphics for the cards.</longdesc>
+					</local_schema>
+				</entry>
+			</dir>
+		</dir>
+	</dir>
+	<dir name="apps">
+		<dir name="aisleriot">
+			<entry name="recent_games_list" mtime="1394710909" schema="/schemas/apps/aisleriot/recent_games_list"/>
+			<entry name="statistics" mtime="1394710909" schema="/schemas/apps/aisleriot/statistics"/>
+			<entry name="game_file" mtime="1394710909" schema="/schemas/apps/aisleriot/game_file"/>
+			<entry name="animations" mtime="1394710909" schema="/schemas/apps/aisleriot/animations"/>
+			<entry name="sound" mtime="1394710909" schema="/schemas/apps/aisleriot/sound"/>
+			<entry name="click_to_move" mtime="1394710909" schema="/schemas/apps/aisleriot/click_to_move"/>
+			<entry name="show_statusbar" mtime="1394710909" schema="/schemas/apps/aisleriot/show_statusbar"/>
+			<entry name="show_toolbar" mtime="1394710909" schema="/schemas/apps/aisleriot/show_toolbar"/>
+			<entry name="card_style" mtime="1394710909" schema="/schemas/apps/aisleriot/card_style"/>
+		</dir>
+	</dir>
+</gconf>
