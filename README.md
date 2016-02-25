@@ -1,5 +1,6 @@
-# Administration système - Projet final - DA2I
-## Par FEVRE Rémy
+# Administration système 
+## Projet final - DA2I
+### Par FEVRE Rémy
 
 ---
 
@@ -32,7 +33,7 @@
   - le dernier octet de l'adresse du client FreeBSD devra être **40**
 
 
-- Vos machines constitueront un réseau dont le nom de domaine IP (DNS) devra être **da2i.org**.
+- Vos machines constitueront un réseau dont le nom de domaine IP (DNS) devra être `da2i.org`
 
 - Les clients devront avoir des interfaces graphique en **français, anglais et néerlandais.**
 
