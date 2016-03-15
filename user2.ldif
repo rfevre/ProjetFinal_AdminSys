@@ -1,0 +1,18 @@
+dn: cn=bernard,ou=groupes,dc=da2i,dc=org
+cn: bernard
+gidNumber: 1002
+objectClass: top
+objectClass: posixGroup
+
+dn: uid=bernard,ou=users,dc=da2i,dc=org
+uid: bernard
+uidNumber: 1002
+gidNumber: 1002
+cn: Bernard
+sn: Bernard
+objectClass: top
+objectClass: person
+objectClass: posixAccount
+objectClass: shadowAccount
+loginShell: /bin/bash
+homeDirectory: /home/bernard

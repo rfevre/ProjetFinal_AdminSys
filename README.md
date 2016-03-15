@@ -1,18 +1,18 @@
-# Administration système 
+# Administration système
 ## Projet final - DA2I
 ### Par FEVRE Rémy
 
 ---
 
-## TODO :
+## TODO-list :
 
-- [ ] **Serveur Debian :**
-  - [ ] Authentification des utilisateurs via le service LDAP
-  - [ ] Stockage des données des utilisateurs et partage de celles-ci via les services NFS
-- [ ] **Client Debian :**
-  - [ ] Traitement de texte et tableur via libreoffice
-  - [ ] Navigateur web via firefox
-  - [ ] Outil de gestion de mail via thunderbird
+- [x] **Serveur Debian :**
+  - [x] Authentification des utilisateurs via le service LDAP
+  - [x] Stockage des données des utilisateurs et partage de celles-ci via les services NFS
+- [x] **Client Debian :**
+  - [x] Traitement de texte et tableur via libreoffice
+  - [x] Navigateur web via firefox
+  - [x] Outil de gestion de mail via thunderbird
 - [ ] **Client Archlinux :**
   - [ ] Traitement de texte et tableur via libreoffice
   - [ ] Navigateur web via firefox
@@ -67,3 +67,8 @@
 
 - Sur les clients les répertoires de stockage des utilisateurs seront accessibles en respectant le modèle de nommage suivant (ils seront montés en utilisant le protocole NFS):
   - `/home/login`
+
+
+## Serveur
+
+###
