@@ -1,0 +1,22 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	localhost. root.localhost. (
+			      2		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+da2i.org.	IN	NS	server.da2i.org.
+da2i.org.	IN	A	192.168.194.10
+;@	IN	NS	localhost.
+;@	IN	A	127.0.0.1
+;@	IN	AAAA	::1
+server	IN	A	192.168.194.10
+gateway	IN	A	192.168.194.2
+debian	IN	A	192.168.194.20
+archlinux	IN	A	192.168.194.30
+freebds	IN	A	192.166.194.40
+www	IN	CNAME	da2i.org.

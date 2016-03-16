@@ -1,0 +1,14 @@
+TARGETS = rsyslog killprocs motd atd bind9 slapd acpid dbus ssh exim4 bootlogs cron nfs-kernel-server single rc.local rmnologin
+INTERACTIVE =
+atd: rsyslog
+bind9: rsyslog
+slapd: rsyslog
+acpid: rsyslog
+dbus: rsyslog
+ssh: rsyslog
+exim4: rsyslog bind9
+cron: rsyslog bind9 slapd
+nfs-kernel-server: bind9
+single: killprocs motd bootlogs
+rc.local: atd rsyslog exim4 bind9 slapd motd bootlogs acpid dbus ssh cron nfs-kernel-server
+rmnologin: atd rsyslog exim4 bind9 slapd motd bootlogs acpid dbus ssh cron nfs-kernel-server

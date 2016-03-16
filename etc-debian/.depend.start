@@ -1,0 +1,15 @@
+TARGETS = rsyslog bootlogs killprocs motd acpid dbus hddtemp nscd atd exim4 single ssh lightdm saned cron rc.local rmnologin
+INTERACTIVE =
+acpid: rsyslog
+dbus: rsyslog
+hddtemp: rsyslog
+nscd: rsyslog
+atd: rsyslog
+exim4: rsyslog
+single: killprocs bootlogs motd
+ssh: rsyslog
+lightdm: acpid dbus
+saned: rsyslog dbus
+cron: rsyslog nscd
+rc.local: lightdm acpid dbus hddtemp rsyslog nscd atd exim4 saned bootlogs motd cron ssh
+rmnologin: lightdm acpid dbus hddtemp rsyslog nscd atd exim4 saned bootlogs motd cron ssh

@@ -1,0 +1,13 @@
+TARGETS = atd slapd exim4 nfs-kernel-server urandom bind9 sendsigs rsyslog umountnfs.sh rpcbind nfs-common hwclock.sh networking umountfs umountroot halt reboot
+bind9: exim4
+sendsigs: atd exim4 bind9 slapd nfs-kernel-server
+rsyslog: atd exim4 sendsigs bind9 slapd
+umountnfs.sh: atd exim4 sendsigs rsyslog bind9 slapd nfs-kernel-server
+rpcbind: umountnfs.sh nfs-kernel-server
+nfs-common: umountnfs.sh nfs-kernel-server
+hwclock.sh: atd nfs-common rsyslog nfs-kernel-server
+networking: exim4 umountnfs.sh rpcbind bind9 slapd
+umountfs: urandom atd exim4 hwclock.sh umountnfs.sh networking rpcbind bind9 slapd nfs-kernel-server
+umountroot: umountfs
+halt: umountroot
+reboot: umountroot
